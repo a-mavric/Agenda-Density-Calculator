@@ -99,7 +99,7 @@ def GFIQuestion(agendaInfo):
 
     while True:
 
-        response = input("Does your deck contain any copies of Global Food Initiative? (y/n)\n").lower()
+        response = input(f"Does your deck contain any copies of Global Food Initiative? (y/n)\n").lower()
         
         match response:
 
@@ -264,7 +264,7 @@ if '-w' in (sys.argv):
 deckSize = DeckSize()
 minDeckSize = MinDeckSize(deckSize)
 requiredAgendas = RequiredAgendas(minDeckSize)
-print(f"\nYour deck contains {deckSize} cards, and requires {requiredAgendas[0]}-{requiredAgendas[1]} points of Agendas!")
+print(f"\nYour deck contains {deckSize} cards, and requires {requiredAgendas[0]}-{requiredAgendas[1]} points of agendas!")
 
 agendaInfo = AgendaFiller(requiredAgendas)
 
@@ -284,6 +284,7 @@ if MAD_DASHING:
     dashingCardsAccessedData = DensityTest(Deck, loops)
     dashingFinalAvgData = CompileData(dashingCardsAccessedData)
 
+print(f"\nThe deck has an agenda density of 1 agenda per {deckSize/agendaInfo[1]:.1f} cards.")
 print(f"\nOn average, to win a game, a Runner would need to access {finalAvgData[0]} agendas.")
 
 for x in range(len(finalAvgData[2])):
@@ -298,5 +299,6 @@ if MAD_DASHING:
 
     print("\nThe Mad Dash is 'worth' {dashability:.4f} extra accesses!".format(dashability = finalAvgData[0]-dashingFinalAvgData[0]))
 
-print("")
-
+#TODO
+#add 0 point agendas? That messess up the Mad Dash math.
+#add negative points?
