@@ -1,2 +1,7 @@
 # Agenda-Density-Calculator
-A Python script that calculates the defensibility of different agenda suites
+
+A simple Python script that calculates the defensibility of different agenda suites.
+
+Add '-m' as a command line argument to see additional data on how your agenda suite interacts with Mad Dash. 
+
+
