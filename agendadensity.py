@@ -4,6 +4,7 @@ import sys
 
 POINTS_TO_WIN = 7
 MAD_DASHING = False
+SHOW_WORK = False
 
 def DeckSize():
 
@@ -79,11 +80,6 @@ def AgendaFiller(requiredAgendas):
         
         agendaSum = (3*num3s) + (2*num2s) + (1*num1s)
         
-        ##this should be moved
-        ##print(f"Your deck contains {num3s} three point agendas, {num2s} two point agendas, and {num1s} one point agendas, totalling {agendaSum} points.")
-
-        ##print(f"\nYour deck contains {agendaSum} agenda points.")
-
         if agendaSum != requiredAgendas[0] and agendaSum != requiredAgendas[1]:
             print(f"Your deck is expected to contain {requiredAgendas[0]}-{requiredAgendas[1]} agenda points, but currently contains {agendaSum} agenda points.")
             print("Please re-enter your agenda selection!\n")
@@ -141,11 +137,9 @@ def GFIQuestion(agendaInfo):
                 continue  
 
 
-
 def BuildDeck(deckSize, agendaInfo):
 
-    nonAgendas = deckSize - agendaInfo[1]
-    ##print(f"The deck contains {nonAgendas} non-agendas.")
+    nonAgendas = deckSize - agendaInfo[1]    
 
     deck = []
 
@@ -174,15 +168,22 @@ def NumOfLoops():
             print("Input is not an appropriate integer.")
             continue
 
+def showWorkAccessedList(accessList):
+
+    print("")
+    
+    for x in range(len(accessList)):
+        print(f"Test {x+1}: Cards Accessed: {accessList[x][0]}, Points Scored: {accessList[x][1]}, Agendas Stolen: {accessList[x][2]}")
+
 
 def DensityTest(deck,loops):
 
-    ##print(f"Testing {testLoops} times!")
-
     cardsAccessedList = []
 
-    for _ in itertools.repeat(None, loops):
+    for x in range(loops):
        
+        if SHOW_WORK:
+            print(f"\n-- Test {x+1} --")
         testingDeck = Deck
         agendaPointsStolen = 0
         agendasStolen = 0
@@ -191,7 +192,8 @@ def DensityTest(deck,loops):
 
         for card in testingDeck:
             cardsAccessed += 1
-            ##print(f"Card {cardsAccessed} = {card}")
+            if SHOW_WORK:
+                print(f"Card {cardsAccessed} = {card}")
             if isinstance(card,int):
                 agendaPointsStolen += card
                 agendasStolen += 1
@@ -200,8 +202,11 @@ def DensityTest(deck,loops):
                 break
 
         cardsAccessedList.append((cardsAccessed,agendaPointsStolen,agendasStolen))
-        ##print(f"{agendasStolen} agendas were stolen worth {agendaPointsStolen} points in {cardsAccessed} accesses!")
 
+        
+
+    if SHOW_WORK:
+            showWorkAccessedList(cardsAccessedList)
 
     return cardsAccessedList
 
@@ -223,9 +228,6 @@ def CompileData(cardsAccessedData):
 
     avgCardsAccessed = average(cardsAccessedList)
     avgAgendaPointsStolen = average(agendaPointsStolen)
-    #avgAgendaPointsStolen = AgendaPointsStolenRatio(agendaPointsStolen)
-    #avgAgendasStolen = int(average(agendasStolen))
-    #print(f"\navgAgendaStolen = {agendasStolen}")
     avgAgendasStolen = AgendaPointsStolenRatio(agendasStolen)
 
     return (avgCardsAccessed, avgAgendaPointsStolen, avgAgendasStolen)
@@ -242,24 +244,22 @@ def AgendaPointsStolenRatio(agendaPointsStolen):
         else:
             agendaPointsStolenCounts[agendaPointsStolenValues.index(datapoint)] += 1
 
-    ##for x in range(len(agendaPointsStolenValues)):
-    ##    print(f" - The runner wins by stealing {agendaPointsStolenValues[x]} agendas {agendaPointsStolenCounts[x]} times.")
-
     agendaPointsStolenFinalValues = []
 
     for x in range(len(agendaPointsStolenValues)):
         agendaPointsStolenFinalValues.append((agendaPointsStolenValues[x],agendaPointsStolenCounts[x],(agendaPointsStolenCounts[x]/len(agendaPointsStolen))))
 
-    #print(agendaPointsStolenFinalValues)
     return agendaPointsStolenFinalValues
-
 
 
 
 print("\nWelcome to the Netrunner Agenda Density Calculator!\n")
 
 if '-m' in (sys.argv):
-    MAD_DASHING = True   
+    MAD_DASHING = True
+
+if '-w' in (sys.argv):
+    SHOW_WORK = True     
 
 deckSize = DeckSize()
 print(f"\nYour deck contains {deckSize} cards!")
@@ -272,12 +272,9 @@ agendaInfo = AgendaFiller(requiredAgendas)
 if agendaInfo[0][0] != 0:   
     agendaInfo = GFIQuestion(agendaInfo)
 
-##print(f"your deck contains {agendaInfo[1]} agendas, of {agendaInfo[0]} distribution.")
-
 Deck = BuildDeck(deckSize,agendaInfo)
 
 loops = NumOfLoops()
-
 
 cardsAccessedData = DensityTest(Deck, loops)
 
@@ -287,7 +284,6 @@ if MAD_DASHING:
     POINTS_TO_WIN = 6
     dashingCardsAccessedData = DensityTest(Deck, loops)
     dashingFinalAvgData = CompileData(dashingCardsAccessedData)
-
 
 print(f"\nOn average, to win a game, a runner would need to access {finalAvgData[0]} agendas.")
 
