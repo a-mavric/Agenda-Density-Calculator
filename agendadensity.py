@@ -171,7 +171,7 @@ def NumOfLoops():
 def showWorkAccessedList(accessList):
 
     print("")
-    
+
     for x in range(len(accessList)):
         print(f"Test {x+1}: Cards Accessed: {accessList[x][0]}, Points Scored: {accessList[x][1]}, Agendas Stolen: {accessList[x][2]}")
 
@@ -262,10 +262,9 @@ if '-w' in (sys.argv):
     SHOW_WORK = True     
 
 deckSize = DeckSize()
-print(f"\nYour deck contains {deckSize} cards!")
 minDeckSize = MinDeckSize(deckSize)
 requiredAgendas = RequiredAgendas(minDeckSize)
-print(f"Your deck requires {requiredAgendas[0]}-{requiredAgendas[1]} points of Agendas!")
+print(f"\nYour deck contains {deckSize} cards, and requires {requiredAgendas[0]}-{requiredAgendas[1]} points of Agendas!")
 
 agendaInfo = AgendaFiller(requiredAgendas)
 
@@ -285,17 +284,17 @@ if MAD_DASHING:
     dashingCardsAccessedData = DensityTest(Deck, loops)
     dashingFinalAvgData = CompileData(dashingCardsAccessedData)
 
-print(f"\nOn average, to win a game, a runner would need to access {finalAvgData[0]} agendas.")
+print(f"\nOn average, to win a game, a Runner would need to access {finalAvgData[0]} agendas.")
 
 for x in range(len(finalAvgData[2])):
-    print(" - The runner wins by stealing {agendaCount} agendas {average:.0%} of the time.".format(agendaCount = finalAvgData[2][x][0], average = finalAvgData[2][x][2]))   
+    print(" - The Runner wins by stealing {agendaCount} agendas {average:.0%} of the time.".format(agendaCount = finalAvgData[2][x][0], average = finalAvgData[2][x][2]))   
 
 print("")
 
 if MAD_DASHING:
     print(f"If the Runner is playing Mad Dash, that average is instead {dashingFinalAvgData[0]} agendas.")   
     for x in range(len(dashingFinalAvgData[2])):
-        print(" - The runner wins by stealing {dashingAgendaCount} agendas {dashingAverage:.0%} of the time.".format(dashingAgendaCount = dashingFinalAvgData[2][x][0], dashingAverage = dashingFinalAvgData[2][x][2]))   
+        print(" - The Runner wins by stealing {dashingAgendaCount} agendas {dashingAverage:.0%} of the time.".format(dashingAgendaCount = dashingFinalAvgData[2][x][0], dashingAverage = dashingFinalAvgData[2][x][2]))   
 
     print("\nThe Mad Dash is 'worth' {dashability:.4f} extra accesses!".format(dashability = finalAvgData[0]-dashingFinalAvgData[0]))
 
