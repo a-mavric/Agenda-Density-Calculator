@@ -338,7 +338,7 @@ if MAD_DASHING:
     dashingFinalAvgData = CompileData(dashingCardsAccessedData)
 
 print(f"\nThe deck has an agenda density of 1 agenda per {deckSize/agendaInfo[1]:.1f} cards.")
-print(f"\nOn average, to win a game, a Runner would need to access {finalAvgData[0]} agendas.")
+print(f"\nOn average, to win a game, a Runner would need to access {finalAvgData[0]} cards.")
 
 for x in range(len(finalAvgData[2])):
     print(" - The Runner wins by stealing {agendaCount} agendas {average:.0%} of the time.".format(agendaCount = finalAvgData[2][x][0], average = finalAvgData[2][x][2]))   
@@ -346,7 +346,7 @@ for x in range(len(finalAvgData[2])):
 print("")
 
 if MAD_DASHING:
-    print(f"If the Runner is playing Mad Dash, that average is instead {dashingFinalAvgData[0]} agendas.")   
+    print(f"If the Runner is playing Mad Dash, that average is instead {dashingFinalAvgData[0]} cards.")   
     for x in range(len(dashingFinalAvgData[2])):
         print(" - The Runner wins by stealing {dashingAgendaCount} agendas {dashingAverage:.0%} of the time.".format(dashingAgendaCount = dashingFinalAvgData[2][x][0], dashingAverage = dashingFinalAvgData[2][x][2]))   
 
