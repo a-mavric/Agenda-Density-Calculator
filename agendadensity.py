@@ -1,10 +1,13 @@
 import itertools
 import random
 import sys
+import collections
+from matplotlib import pyplot as plt
 
 POINTS_TO_WIN = 7
 MAD_DASHING = False
 SHOW_WORK = False
+PLOT_DATA = False
 
 def DeckSize():
 
@@ -53,6 +56,7 @@ def AgendaFiller(requiredAgendas):
                 break
             else:
                 print("Input is not an appropriate integer.")
+      
 
         while True:
             val = input(" - Two point agendas: ")
@@ -92,10 +96,14 @@ def AgendaFiller(requiredAgendas):
         print(f" - [{num2s}] two point agendas")
         print(f" - [{num1s}] one point agendas\n")        
 
-        agendaSpread = [num3s, num2s, num1s]        
+        agendaSpread = [num3s, num2s, num1s]  
+
+        if num3s != 0:   
+            agendaSpread = GFIQuestion(agendaSpread)  
+
         return agendaSpread, numAgendas
 
-def GFIQuestion(agendaInfo):
+def GFIQuestion(agendaSpread):
 
     while True:
 
@@ -115,22 +123,24 @@ def GFIQuestion(agendaInfo):
                         print("Input is not an appropriate integer.")
                         continue
                 
-                    if numGFIs > agendaInfo[0][0]:
+                    if numGFIs > agendaSpread[0]:
                         print("\nYou can not have more Global Food Initiative's than three point agendas!")
                         continue
 
                     else:                        
                         ## TODO
                         #this breaks if we have 4 point agendas, and doesn't do 0 point agendas!
-                        agendaInfo[0][0] = agendaInfo[0][0] - numGFIs
-                        agendaInfo[0][1] = agendaInfo[0][1] + numGFIs 
+                        agendaSpread[0] = agendaSpread[0] - numGFIs
+                        agendaSpread[1] = agendaSpread[1] + numGFIs 
+                        #storing a GFI count here
+                        agendaSpread.append(numGFIs)
                         
                         print("")
-                        return agendaInfo
+                        return agendaSpread
 
             case "n" | "no":
                 print("")
-                return agendaInfo
+                return agendaSpread
 
             case _:
                 print("\nApologies, I didn't understand your response.") 
@@ -202,7 +212,6 @@ def DensityTest(deck,loops):
                 break
 
         cardsAccessedList.append((cardsAccessed,agendaPointsStolen,agendasStolen))
-
         
 
     if SHOW_WORK:
@@ -213,13 +222,54 @@ def DensityTest(deck,loops):
 def average(list):
     return sum(list) / len(list)
 
+def PlotData(cardsAccessedData, loops, dashedCardsAccessedData, agendaInfo, deckSize):
+
+    accessFreqData = collections.Counter(cardsAccessedData)
+    
+    if SHOW_WORK:
+        print(f"Number of Accesses: {accessFreqData.keys()}")
+        print(f"Their corresponding frequencies: {accessFreqData.values()}")    
+
+    plt.style.use('fivethirtyeight')
+
+    plt.bar(accessFreqData.keys(),accessFreqData.values(), label="No Mad Dash")
+
+    if dashedCardsAccessedData is not None:
+        dashedAccessFreqData = collections.Counter(dashedCardsAccessedData)
+        plt.bar(dashedAccessFreqData.keys(),dashedAccessFreqData.values(), alpha=0.75, label="Mad Dash")
+        plt.legend()
+
+    plt.xlabel("Number of Accesses to Win")
+    plt.ylabel(f"Freq. in {loops} Simulations")
+    
+
+    if len(agendaInfo[0]) > 3:
+        strNumGFIs = str(agendaInfo[0][3]) + "xGFI's, "
+        strNum3s = str(agendaInfo[0][0]) + "x3's, " if agendaInfo[0][0] != 0 else ""
+        strNum2s = str((agendaInfo[0][1])-agendaInfo[0][3]) + "x2's, " if agendaInfo[0][1] != 0 else ""
+        strNum1s = str(agendaInfo[0][2]) + "x1's, " if agendaInfo[0][2] != 0 else ""
+    
+    else:
+        strNumGFIs = ""
+        strNum3s = str(agendaInfo[0][0]) + "x3's, " if agendaInfo[0][0] != 0 else ""
+        strNum2s = str(agendaInfo[0][1]) + "x2's, " if agendaInfo[0][1] != 0 else ""
+        strNum1s = str(agendaInfo[0][2]) + "x1's, " if agendaInfo[0][2] != 0 else ""
+
+    plotTitle = str(f"Winning Accesses | {deckSize}/{agendaInfo[1]} | {strNum3s} {strNumGFIs} {strNum2s} {strNum1s}").rstrip()   
+    
+    plt.title(plotTitle[:-1])  
+    
+    plt.tight_layout()
+    
+    plt.show()
+
 def CompileData(cardsAccessedData):
 
     cardsAccessedList = []
     agendaPointsStolen = []
     agendasStolen = []
 
-    for datapoint in cardsAccessedData:
+    for datapoint in cardsAccessedData:        
         cardsAccessedList.append(datapoint[0])
         agendaPointsStolen.append(datapoint[1])
         agendasStolen.append(datapoint[2])
@@ -230,7 +280,7 @@ def CompileData(cardsAccessedData):
     avgAgendaPointsStolen = average(agendaPointsStolen)
     avgAgendasStolen = AgendaPointsStolenRatio(agendasStolen)
 
-    return (avgCardsAccessed, avgAgendaPointsStolen, avgAgendasStolen)
+    return (avgCardsAccessed, avgAgendaPointsStolen, avgAgendasStolen, cardsAccessedList)
 
 def AgendaPointsStolenRatio(agendaPointsStolen):
 
@@ -251,8 +301,7 @@ def AgendaPointsStolenRatio(agendaPointsStolen):
 
     return agendaPointsStolenFinalValues
 
-
-
+   
 print("\nWelcome to the Netrunner Agenda Density Calculator!\n")
 
 if '-m' in (sys.argv):
@@ -261,6 +310,9 @@ if '-m' in (sys.argv):
 if '-w' in (sys.argv):
     SHOW_WORK = True     
 
+if '-p' in (sys.argv):
+    PLOT_DATA = True    
+
 deckSize = DeckSize()
 minDeckSize = MinDeckSize(deckSize)
 requiredAgendas = RequiredAgendas(minDeckSize)
@@ -268,8 +320,8 @@ print(f"\nYour deck contains {deckSize} cards, and requires {requiredAgendas[0]}
 
 agendaInfo = AgendaFiller(requiredAgendas)
 
-if agendaInfo[0][0] != 0:   
-    agendaInfo = GFIQuestion(agendaInfo)
+if SHOW_WORK:
+    print(agendaInfo)
 
 Deck = BuildDeck(deckSize,agendaInfo)
 
@@ -298,6 +350,12 @@ if MAD_DASHING:
         print(" - The Runner wins by stealing {dashingAgendaCount} agendas {dashingAverage:.0%} of the time.".format(dashingAgendaCount = dashingFinalAvgData[2][x][0], dashingAverage = dashingFinalAvgData[2][x][2]))   
 
     print("\nThe Mad Dash is 'worth' {dashability:.4f} extra accesses!".format(dashability = finalAvgData[0]-dashingFinalAvgData[0]))
+
+if PLOT_DATA:
+    if MAD_DASHING:    
+        PlotData(finalAvgData[3], loops, dashingFinalAvgData[3], agendaInfo, deckSize)
+    else:
+        PlotData(finalAvgData[3], loops, None, agendaInfo, deckSize)
 
 #TODO
 #add 0 point agendas? That messess up the Mad Dash math.
