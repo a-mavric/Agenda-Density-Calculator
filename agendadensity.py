@@ -92,9 +92,9 @@ def AgendaFiller(requiredAgendas):
         numAgendas = num3s+num2s+num1s
 
         print(f"\nYour deck contains {agendaSum} agenda points across {numAgendas} agendas:")
-        print(f" - [{num3s}] three point agendas")
-        print(f" - [{num2s}] two point agendas")
-        print(f" - [{num1s}] one point agendas\n")        
+        print(f" - [{num3s}] Three point agendas")
+        print(f" - [{num2s}] Two point agendas")
+        print(f" - [{num1s}] One point agendas\n")        
 
         agendaSpread = [num3s, num2s, num1s]  
 
@@ -246,7 +246,7 @@ def PlotData(cardsAccessedData, loops, dashedCardsAccessedData, agendaInfo, deck
     if len(agendaInfo[0]) > 3:
         strNumGFIs = str(agendaInfo[0][3]) + "xGFI's, "
         strNum3s = str(agendaInfo[0][0]) + "x3's, " if agendaInfo[0][0] != 0 else ""
-        strNum2s = str((agendaInfo[0][1])-agendaInfo[0][3]) + "x2's, " if agendaInfo[0][1] != 0 else ""
+        strNum2s = str((agendaInfo[0][1])-agendaInfo[0][3]) + "x2's, " if agendaInfo[0][1]-agendaInfo[0][3] != 0 else ""
         strNum1s = str(agendaInfo[0][2]) + "x1's, " if agendaInfo[0][2] != 0 else ""
     
     else:
@@ -255,7 +255,8 @@ def PlotData(cardsAccessedData, loops, dashedCardsAccessedData, agendaInfo, deck
         strNum2s = str(agendaInfo[0][1]) + "x2's, " if agendaInfo[0][1] != 0 else ""
         strNum1s = str(agendaInfo[0][2]) + "x1's, " if agendaInfo[0][2] != 0 else ""
 
-    plotTitle = str(f"Winning Accesses | {deckSize}/{agendaInfo[1]} | {strNum3s} {strNumGFIs} {strNum2s} {strNum1s}").rstrip()   
+    plotTitle = str(f"Winning Accesses | {deckSize}/{agendaInfo[1]} | {strNum3s} {strNumGFIs} {strNum2s} {strNum1s}").rstrip()
+    plotTitle = " ".join(plotTitle.split())   
     
     plt.title(plotTitle[:-1])  
     
