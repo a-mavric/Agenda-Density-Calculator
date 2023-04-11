@@ -8,8 +8,8 @@ Tutorial video available on youtube.com/metropolegrid
 - Add '-l' as a command line argument to simulate playing in limited (the runner wins by stealing 6 agenda points).
 - Add '-do' as a command line argument to bypass checks for legal deck compositions.
 
-- Add '-p' as a command line argument to plot number of accesses results with matplotlib.
-- Add '-wr' as a command line argument to plot cumulative winrate with matplotlib.
+- Add '-pwr' as a command line argument to plot cumulative winrate with matplotlib.
+- Add '-pa' as a command line argument to plot number of accesses results with matplotlib.
 
 - Add '-c' as a command line argument to compare two different agenda compositions.
 - Add '-cc' as a command line argument to compare three different agenda compositions.
