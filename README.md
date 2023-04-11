@@ -15,6 +15,5 @@ Tutorial video available on youtube.com/metropolegrid
 - Add '-cc' as a command line argument to compare three different agenda compositions.
 
 - Add '-d' as a command line argument to see collected data for debugging.
-- Add '-wo' as a command line argument to see additional written output.
 
 
