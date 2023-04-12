@@ -1,11 +1,11 @@
 # Agenda-Density-Calculator
 
-A simple Python script that calculates the defensibility of different agenda suites.
-Tutorial video available on youtube.com/metropolegrid
+A simple Python script that calculates the defensibility of different agenda suites in Android: Netrunner.
+Tutorial video available @ https://youtu.be/-HmSqqTNyRM
 
 - Add '-m' as a command line argument to simulate a runner playing Mad Dash.
 - Add '-n' as a command line argument to simulate negative agenda point cards.
-- Add '-l' as a command line argument to simulate playing in limited (the runner wins by stealing 6 agenda points).
+- Add '-l' as a command line argument to simulate playing in limited (the Runner wins by stealing 6 agenda points).
 - Add '-do' as a command line argument to bypass checks for legal deck compositions.
 
 - Add '-pwr' as a command line argument to plot cumulative winrate with matplotlib.
