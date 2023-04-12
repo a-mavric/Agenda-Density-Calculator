@@ -4,7 +4,7 @@ import sys
 import collections
 from matplotlib import pyplot as plt
 
-# Agenda Density Calculator - Andrej Gomizelj (04/10/23)
+# Agenda Density Calculator - Andrej Gomizelj (04/12/23)
 # Tutorial video available on youtube.com/metropolegrid
 #
 # A utility to calculate the 'defensibility' of various agenda suites in Android: Netrunner
@@ -89,11 +89,11 @@ def flag_checker(args):
         SHOW_WORK = True     
 
     # plot accessdata
-    if '-p' in (args):
+    if '-pa' in (args):
         PLOT_DATA = True  
 
     # plot cumulative winrate
-    if '-wr' in (args):
+    if '-pwr' in (args):
         PLOT_WINRATE = True
 
     # plot cumulative winrate
