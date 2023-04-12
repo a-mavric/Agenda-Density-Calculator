@@ -1,6 +1,8 @@
 # Agenda-Density-Calculator
 
 A simple Python script that calculates the defensibility of different agenda suites in Android: Netrunner.
+Requires matplotlib for graphing functionality.
+
 Tutorial video available @ https://youtu.be/-HmSqqTNyRM
 
 - Add '-m' as a command line argument to simulate a runner playing Mad Dash.
